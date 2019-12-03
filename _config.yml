@@ -1,1 +1,7 @@
-theme: jekyll-theme-tactile
+title: name.test(/p.tt/)
+name: John Pettitt
+email: j@p.tt
+description: John Pettitt's home on the interwebs.
+display_footer: &copy; 2019 John Pettitt  #change this to 'none' if you want to hide the footer copyright text
+
+theme: jekyll-material-theme
