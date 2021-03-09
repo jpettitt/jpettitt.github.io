@@ -3,4 +3,4 @@ name: John Pettitt
 email: j@p.tt
 description: John Pettitt's home on the interwebs.
 display_footer: "&copy; 2021 John Pettitt"
-theme: jekyll-material-theme
+theme: jekyll-theme-slate
