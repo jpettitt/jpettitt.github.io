@@ -1,5 +1,6 @@
 ---
 title: /p.tt/
+canonical_url: 'https://p.tt/'
 ---
 
 ## John Pettitt
