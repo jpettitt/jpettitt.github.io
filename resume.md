@@ -1,6 +1,7 @@
 ---
 title: John Pettitt - Resume
 canonical_url: 'https://p.tt/resume'
+permalink: /resume/
 ---
 
 # John Pettitt
