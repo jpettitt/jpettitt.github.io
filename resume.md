@@ -4,7 +4,7 @@ canonical_url: 'https://p.tt/resume.html'
 permalink: /resume.html
 ---
 
-# John Pettitt
+# John Pettitt - Resume
 
 John Pettitt has created and led successful technology companies for 30 years. John has had four successful founder exits: 
 two sales (Relay Media and Specialix) and two successful IPOs (CyberSource and Beyond.com). CyberSource was subsequently 
