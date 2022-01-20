@@ -1,5 +1,5 @@
 ---
-title: /p.tt/
+title: /p.tt/[^1]
 canonical_url: 'https://p.tt/'
 ---
 
@@ -20,3 +20,5 @@ If you want to know more about me you can find me on:
 * [Instagram](https://www.instagram.com/wtfaccountname/)
 
 Or send me email j@ the domain in the title.
+
+[^1]: Yes the domain is a regex that matches my name
