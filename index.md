@@ -1,5 +1,5 @@
 ---
-title: /p.tt/[^1]
+title: "/p.tt/"
 canonical_url: 'https://p.tt/'
 ---
 
@@ -21,4 +21,4 @@ If you want to know more about me you can find me on:
 
 Or send me email j@ the domain in the title.
 
-[^1]: Yes the domain is a regex that matches my name
+<sup>Yes the domain is a regex that matches my name :-)</sup>
