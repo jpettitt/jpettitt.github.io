@@ -22,3 +22,5 @@ If you want to know more about me you can find me on:
 Or send me email j@ the domain in the title.
 
 <sup>Yes the domain is a regex that matches my name :-)</sup>
+
+**This Site does not use Cookies or any tracking technology so there is no anoyting banner**
