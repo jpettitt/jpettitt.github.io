@@ -18,7 +18,7 @@ I'm a pioneer in content protection and e-commerce including the first ever app 
 If you want to know more about me you can find me on:
 
 * [Linkedin](https://www.linkedin.com/in/johnpettitt/)
-* [Twitter](https://twitter.com/jpp123/)
+
 * [Instagram](https://www.instagram.com/wtfaccountname/)
 
 Or send me email j@ the domain in the title.
