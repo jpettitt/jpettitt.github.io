@@ -4,10 +4,13 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  jsonLd?: object;
 }
 
-const { title, description } = Astro.props;
+const { title, description, jsonLd } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// "<" escaped so no string value can ever close the script element early.
+const ld = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -26,6 +29,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
+    {ld && <script type="application/ld+json" set:html={ld} />}
   </head>
   <body>
     <slot />

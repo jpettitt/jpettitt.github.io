@@ -17,6 +17,8 @@ Everything factual lives in [src/data/site.ts](src/data/site.ts): projects, time
 
 Install links point to each project's GitHub repository, whose README has the install instructions.
 
+The home page's schema.org JSON-LD (WebSite, ProfilePage, Person, and one node per project) is generated from the same data in [src/data/structured.ts](src/data/structured.ts), so it can't claim anything the page doesn't show. Projects John made carry `creator`; adopted and maintained ones carry only `maintainer`.
+
 ## No third-party requests
 
 The site sets no cookies and loads nothing from anyone else's servers. Keep it that way:

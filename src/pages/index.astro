@@ -1,9 +1,10 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import LiveClock from '../components/LiveClock.astro';
 import photo from '../assets/john-pettitt.jpg';
 import { home, milestones, patents, projects, provenanceLabel, writing } from '../data/site';
+import { homeJsonLd } from '../data/structured';
 
 interface Row {
   key: string;
@@ -28,9 +29,14 @@ const rows: Row[] = [
 
 // A year label prints once per run of rows; repeats stay for screen readers.
 const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
+
+// Structured data wants an absolute image URL; reuse the portrait's largest size.
+const portrait = await getImage({ src: photo, width: 374 });
+const jsonLd = homeJsonLd(Astro.site!, new URL(portrait.src, Astro.site).href);
 ---
 
 <Base
+  jsonLd={jsonLd}
   title="John Pettitt"
   description="John Pettitt builds Home Assistant cards and integrations in Nevada City, California, after 35 years of founding companies: CyberSource, Beyond.com, Relay Media."
 >
