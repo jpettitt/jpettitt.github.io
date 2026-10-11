@@ -60,12 +60,12 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
       <li class="row">
         <span class="key">2025–26</span>
         <div>
-          <ul class="dense" aria-label="Current projects">
+          <p id="current-projects" class="dense-label">Projects (owned or maintained):</p>
+          <ul class="dense" aria-labelledby="current-projects">
             {
               projects.map((p) => (
                 <li>
                   <a href={p.href}>{p.name}</a>
-                  {p.provenance !== 'made' && <span class="prov">{provenanceLabel[p.provenance]}</span>}
                 </li>
               ))
             }
@@ -89,7 +89,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
 
     <section id="projects" class="section" aria-labelledby="projects-h">
       <h2 id="projects-h">Projects</h2>
-      <p class="lead">Each name goes to the project's repository; the README there has install instructions.</p>
+      <p class="lead">Cards and integrations link to their repositories, where the README has install instructions.</p>
       <ul class="plist">
         {
           projects.map((p) => (
@@ -135,7 +135,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     <section id="about" class="section about" aria-labelledby="about-h">
       <h2 id="about-h">About</h2>
       <div class="about-grid">
-        <Image src={photo} alt="John Pettitt" width={200} widths={[200, 400]} sizes="200px" class="portrait" />
+        <Image src={photo} alt="John Pettitt" width={200} widths={[200, 374]} sizes="200px" class="portrait" />
         <div class="about-text">
           <p>
             I've spent more than 35 years starting and building technology companies, with four exits as a founder: two
@@ -191,7 +191,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .top h1 {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     letter-spacing: -0.005em;
   }
@@ -199,7 +199,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   .top nav {
     display: flex;
     gap: 20px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .top nav a {
@@ -231,7 +231,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .key {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--ink-2);
     padding-top: 2px;
   }
@@ -249,7 +249,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .now-text {
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 1.42;
     letter-spacing: -0.012em;
     text-wrap: pretty;
@@ -263,7 +263,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     list-style: none;
     margin: 0;
     padding: 0;
-    font-size: 14.5px;
+    font-size: 0.90625rem;
     line-height: 1.8;
   }
 
@@ -273,20 +273,19 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     gap: 0 18px;
   }
 
-  /* Repo names break at hyphens by default; keep each name whole and let
-     only the grey provenance text wrap. */
-  .dense a {
-    white-space: nowrap;
-  }
+  /* No nowrap on the names: as flex items they already wrap whole, and a
+     name only breaks at its hyphens when it alone is wider than the line
+     (320px with WCAG 1.4.12 text spacing), which beats sideways scroll. */
 
-  .prov {
-    margin-left: 5px;
-    color: var(--ink-2);
+  .dense-label {
+    font-size: 0.90625rem;
+    font-weight: 550;
+    line-height: 1.8;
   }
 
   .dense-more {
     margin-top: 6px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 
   .dense-more a {
@@ -298,14 +297,14 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .title {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 550;
     line-height: 1.4;
   }
 
   .body {
     margin-top: 2px;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.55;
     color: var(--ink-2);
     max-width: 58ch;
@@ -321,7 +320,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .entry .title {
-    font-size: 14.5px;
+    font-size: 0.90625rem;
     margin-right: 8px;
   }
 
@@ -334,7 +333,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .landmark .key {
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 300;
     letter-spacing: -0.02em;
     line-height: 1.1;
@@ -343,7 +342,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .landmark .title {
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 600;
     line-height: 1.12;
     letter-spacing: -0.022em;
@@ -352,7 +351,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
 
   .landmark .body {
     margin-top: 8px;
-    font-size: 14.5px;
+    font-size: 0.90625rem;
     max-width: 66ch;
   }
 
@@ -361,13 +360,13 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .section h2 {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     margin-bottom: 4px;
   }
 
   .lead {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--ink-2);
     margin-bottom: 16px;
   }
@@ -381,12 +380,12 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
 
   .plist li {
     display: grid;
-    grid-template-columns: 236px minmax(0, 1fr) 64px;
+    grid-template-columns: 14.75rem minmax(0, 1fr) auto;
     gap: 4px 20px;
     align-items: baseline;
     padding: 13px 0;
     border-top: 1px solid var(--rule);
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .pwho {
@@ -399,7 +398,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .pprov {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--ink-2);
   }
 
@@ -416,7 +415,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   }
 
   .since {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--ink-2);
     text-align: right;
     white-space: nowrap;
@@ -429,11 +428,11 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     gap: 20px;
     padding: 12px 0;
     border-top: 1px solid var(--rule);
-    font-size: 14.5px;
+    font-size: 0.90625rem;
   }
 
   .wmeta {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--ink-2);
     white-space: nowrap;
   }
@@ -452,7 +451,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
 
   .about-grid :global(.portrait) {
     width: 200px;
-    aspect-ratio: 1397 / 1584;
+    aspect-ratio: 374 / 512;
     object-fit: cover;
     border-radius: 6px;
   }
@@ -460,7 +459,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
   .about-text {
     display: grid;
     gap: 14px;
-    font-size: 15px;
+    font-size: 1rem;
     line-height: 1.62;
     max-width: 62ch;
   }
@@ -469,7 +468,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     display: flex;
     flex-wrap: wrap;
     gap: 6px 18px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .links span {
@@ -483,12 +482,12 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     }
 
     .now-text {
-      font-size: 19px;
+      font-size: 1.1875rem;
     }
 
     .landmark .key,
     .landmark .title {
-      font-size: 22px;
+      font-size: 1.375rem;
     }
 
     .plist li {
@@ -512,7 +511,7 @@ const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
     }
 
     .landmark .key {
-      font-size: 17px;
+      font-size: 1.0625rem;
       padding-top: 4px;
     }
 

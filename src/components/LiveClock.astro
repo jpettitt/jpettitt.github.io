@@ -7,19 +7,21 @@ const base = '/geoclock/v0.2.11/';
 ---
 
 <figure class="live">
-  <div
-    class="frame"
-    aria-hidden="true"
-    data-geoclock
-    data-base={base}
-    data-lat={home.latitude}
-    data-lon={home.longitude}
-    data-tz={home.timeZone}
-  >
-    <img class="still" src={`${base}black-marble-2048.jpg`} alt="" width="1024" height="512" decoding="async" />
-  </div>
+  <a class="frame-link" href="https://geoclock.world" aria-label="geoclock.world, the live day/night map">
+    <div
+      class="frame"
+      aria-hidden="true"
+      data-geoclock
+      data-base={base}
+      data-lat={home.latitude}
+      data-lon={home.longitude}
+      data-tz={home.timeZone}
+    >
+      <img class="still" src={`${base}black-marble-2048.jpg`} alt="" width="1024" height="512" decoding="async" />
+    </div>
+  </a>
   <figcaption>
-    <a href="https://github.com/jpettitt/geo-clock-card">geo-clock-card</a>, live. The dot is Nevada City.
+    <a href="https://geoclock.world">geoclock.world</a>, live. The dot is Nevada City.
   </figcaption>
 </figure>
 
@@ -116,6 +118,21 @@ const base = '/geoclock/v0.2.11/';
     opacity: 0.85;
   }
 
+  .frame-link {
+    display: block;
+    border-radius: 8px;
+  }
+
+  .frame-link:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+  }
+
+  /* The only hover cue: the hairline firms up, the map itself stays put. */
+  .frame-link:hover .frame::after {
+    box-shadow: inset 0 0 0 1px var(--rule-strong);
+  }
+
   .frame::after {
     content: '';
     position: absolute;
@@ -123,6 +140,7 @@ const base = '/geoclock/v0.2.11/';
     border-radius: inherit;
     box-shadow: inset 0 0 0 1px var(--frame-edge);
     pointer-events: none;
+    transition: box-shadow 160ms var(--ease-out);
   }
 
   .frame :global(.card) {
@@ -147,7 +165,7 @@ const base = '/geoclock/v0.2.11/';
 
   figcaption {
     margin-top: 8px;
-    font-size: 12.5px;
+    font-size: 0.8125rem;
     line-height: 1.45;
     color: var(--ink-2);
   }

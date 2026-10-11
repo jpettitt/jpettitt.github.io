@@ -12,14 +12,17 @@
   --ink-2: #616161;
   --rule: #ededed;
   --rule-strong: #d9d9d9;
+  /* Links share the body ink, so the underline is their only cue; keep it
+     at 3:1 or better against the page (WCAG 1.4.11 non-text contrast). */
+  --underline: #8c8c8c;
   --link: #1f5fd1;
   --select: rgb(31 95 209 / 0.16);
   --still: #0b0f17;
   --frame-edge: rgb(0 0 0 / 0.1);
 
   --font: 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --gutter: 96px;
-  --col: 720px;
+  --gutter: 6rem;
+  --col: 45rem;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: light dark;
@@ -32,6 +35,7 @@
     --ink-2: #a2a2a2;
     --rule: #212123;
     --rule-strong: #3a3a3d;
+    --underline: #6b6b6e;
     --link: #86adff;
     --select: rgb(134 173 255 / 0.24);
     --frame-edge: rgb(255 255 255 / 0.1);
@@ -62,7 +66,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.6;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
@@ -78,7 +82,7 @@ body {
 a {
   color: inherit;
   text-decoration-line: underline;
-  text-decoration-color: var(--rule-strong);
+  text-decoration-color: var(--underline);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition: text-decoration-color 160ms var(--ease-out), color 160ms var(--ease-out);
@@ -124,7 +128,7 @@ img {
 
 @media (max-width: 560px) {
   :root {
-    --gutter: 64px;
+    --gutter: 4rem;
   }
   .col {
     width: calc(100% - 32px);

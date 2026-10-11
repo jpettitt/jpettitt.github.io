@@ -28,15 +28,19 @@ export const projects: Project[] = [
     provenance: 'maintainer',
   },
   {
+    name: 'geoclock.world',
+    href: 'https://geoclock.world',
+    blurb: 'The live world day/night map on the web, also as a Chrome new tab and a Mac wallpaper.',
+    provenance: 'made',
+    since: 'May 2026',
+    extra: [{ label: 'Mac wallpaper', href: 'https://github.com/jpettitt/geoclock-wallpaper-mac' }],
+  },
+  {
     name: 'geo-clock-card',
     href: 'https://github.com/jpettitt/geo-clock-card',
     blurb: 'Live world day/night clock modelled after Geochron, on NASA Blue and Black Marble imagery.',
     provenance: 'made',
     since: 'May 2026',
-    extra: [
-      { label: 'geoclock.world', href: 'https://geoclock.world' },
-      { label: 'Mac wallpaper', href: 'https://github.com/jpettitt/geoclock-wallpaper-mac' },
-    ],
   },
   {
     name: 'meshcore-card',
@@ -60,15 +64,8 @@ export const projects: Project[] = [
     since: 'May 2026',
   },
   {
-    name: 'section-highlighter',
-    href: 'https://github.com/jpettitt/section-highlighter',
-    blurb: "Sets a section's background, border and glow from entity state.",
-    provenance: 'made',
-    since: 'Sep 2026',
-  },
-  {
     name: 'hacs-stats',
-    href: 'https://github.com/jpettitt/hacs-stats',
+    href: 'https://hacs-stats.dev/',
     blurb: 'Unofficial usage stats for HACS plugins, integrations and themes.',
     provenance: 'made',
     since: 'May 2026',
