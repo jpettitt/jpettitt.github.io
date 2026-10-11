@@ -28,3 +28,5 @@ The site sets no cookies and loads nothing from anyone else's servers. Keep it t
 ## Deploy
 
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds and deploys on every push to `master`. Under the repo's Settings → Pages, the source must be **GitHub Actions**: the old branch-based Jekyll build can't build this site.
+
+p.tt's DNS is proxied through Cloudflare, so GitHub can't issue its own certificate and "Enforce HTTPS" isn't available on the GitHub side. HTTPS and the http→https redirect are Cloudflare settings. If Cloudflare's configuration changes what visitors' browsers send anywhere (Network Error Logging, analytics, injected scripts), update the privacy page.

@@ -23,9 +23,16 @@ const updated = '11 October 2026';
 
     <h2>What the host sees</h2>
     <p>
-      p.tt is hosted on GitHub Pages. GitHub's documentation says that when a GitHub Pages site is visited, "the
-      visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed
-      into GitHub or not." That logging is GitHub's, under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>; I don't see or receive it.
+      p.tt is hosted on GitHub Pages and served through Cloudflare. GitHub's documentation says that when a GitHub
+      Pages site is visited, "the visitor's IP address is logged and stored for security purposes, regardless of
+      whether the visitor has signed into GitHub or not." Cloudflare sits in front of the site and processes standard
+      request logs, such as IP addresses. That logging is theirs, under
+      <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>
+      and <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>; I don't see or receive it.
+    </p>
+    <p>
+      Cloudflare also asks browsers to report network errors. If loading p.tt fails, a browser that supports Network
+      Error Logging may send Cloudflare a short report about the failure.
     </p>
 
     <h2>The live clock</h2>
