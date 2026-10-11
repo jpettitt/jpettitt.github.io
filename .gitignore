@@ -59,3 +59,19 @@ typings/
 
 # next.js build output
 .next
+
+# Astro
+dist/
+.astro/
+
+# Local tooling
+.DS_Store
+.claude/settings.local.json
+.impeccable/config.local.json
+.impeccable/review/
+.impeccable/questions/
+
+# Design and product records kept local (not for the public repo)
+PRODUCT.md
+DESIGN.md
+.impeccable/

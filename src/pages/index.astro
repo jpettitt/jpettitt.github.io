@@ -1,0 +1,538 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import LiveClock from '../components/LiveClock.astro';
+import photo from '../assets/john-pettitt.jpg';
+import { home, milestones, patents, projects, provenanceLabel, writing } from '../data/site';
+
+interface Row {
+  key: string;
+  year: number;
+  weight: 'landmark' | 'entry';
+  title: string;
+  href?: string;
+  body?: string;
+}
+
+const rows: Row[] = [
+  ...milestones.map((m) => ({ key: m.key, year: m.sortYear, weight: m.weight, title: m.title, body: m.body })),
+  ...patents.map((p) => ({
+    key: String(p.year),
+    year: p.year,
+    weight: 'entry' as const,
+    title: p.number,
+    href: p.href,
+    body: `${p.title}. Granted ${p.granted}.`,
+  })),
+].sort((a, b) => b.year - a.year || (a.weight === b.weight ? 0 : a.weight === 'landmark' ? -1 : 1));
+
+// A year label prints once per run of rows; repeats stay for screen readers.
+const shown = rows.map((r, i) => i === 0 || rows[i - 1].key !== r.key);
+---
+
+<Base
+  title="John Pettitt"
+  description="John Pettitt builds Home Assistant cards and integrations in Nevada City, California, after 35 years of founding companies: CyberSource, Beyond.com, Relay Media."
+>
+  <header class="top col">
+    <h1>John Pettitt</h1>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#writing">Writing</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main class="col">
+    <h2 class="visually-hidden">Timeline, newest first</h2>
+    <ol class="timeline">
+      <li class="row now">
+        <span class="key">Now</span>
+        <div class="now-body">
+          <LiveClock />
+          <p class="now-text">
+            I lead Search Ecosystem Metrics engineering at Google and build Home Assistant cards and integrations
+            in Nevada City<span data-localtime data-tz={home.timeZone} hidden></span>.
+          </p>
+        </div>
+      </li>
+
+      <li class="row">
+        <span class="key">2025–26</span>
+        <div>
+          <ul class="dense" aria-label="Current projects">
+            {
+              projects.map((p) => (
+                <li>
+                  <a href={p.href}>{p.name}</a>
+                  {p.provenance !== 'made' && <span class="prov">{provenanceLabel[p.provenance]}</span>}
+                </li>
+              ))
+            }
+          </ul>
+          <p class="dense-more"><a href="#projects">Every project, with what it does</a></p>
+        </div>
+      </li>
+
+      {
+        rows.map((r, i) => (
+          <li class:list={['row', r.weight]}>
+            <span class="key">{shown[i] ? r.key : <span class="visually-hidden">{r.key}</span>}</span>
+            <div>
+              <h3 class="title">{r.href ? <a href={r.href}>{r.title}</a> : r.title}</h3>
+              {r.body && <p class="body">{r.body}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <section id="projects" class="section" aria-labelledby="projects-h">
+      <h2 id="projects-h">Projects</h2>
+      <p class="lead">Each name goes to the project's repository; the README there has install instructions.</p>
+      <ul class="plist">
+        {
+          projects.map((p) => (
+            <li>
+              <div class="pwho">
+                <a class="pname" href={p.href}>{p.name}</a>
+                {p.provenance !== 'made' && <span class="pprov">{provenanceLabel[p.provenance]}</span>}
+              </div>
+              <div class="pwhat">
+                <p class="pblurb">{p.blurb}</p>
+                {p.extra && (
+                  <p class="pextra">
+                    {p.extra.map((x) => (
+                      <a href={x.href}>{x.label}</a>
+                    ))}
+                  </p>
+                )}
+              </div>
+              <span class="since">{p.since}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="writing" class="section" aria-labelledby="writing-h">
+      <h2 id="writing-h">Writing</h2>
+      <ul class="wlist">
+        {
+          writing.map((w) => (
+            <li>
+              <a href={w.href}>{w.title}</a>
+              <span class="wmeta">
+                {w.date}
+                <span class="where">Medium</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="about" class="section about" aria-labelledby="about-h">
+      <h2 id="about-h">About</h2>
+      <div class="about-grid">
+        <Image src={photo} alt="John Pettitt" width={200} widths={[200, 400]} sizes="200px" class="portrait" />
+        <div class="about-text">
+          <p>
+            I've spent more than 35 years starting and building technology companies, with four exits as a founder: two
+            IPOs, CyberSource and Beyond.com, and two sales, Relay Media and Specialix. I hold seven US patents in fraud
+            detection, digital distribution and content, granted between 1999 and 2024.
+          </p>
+          <p>
+            Now I lead Search Ecosystem Metrics engineering at Google, live in {home.place}, and build Home Assistant
+            cards and integrations. I'm also a nationally published photographer and a past winner of the British Design
+            Award.
+          </p>
+          <p class="links">
+            <a href="https://github.com/jpettitt">GitHub</a>
+            <a href="https://www.linkedin.com/in/johnpettitt/">LinkedIn</a>
+            <a href="https://medium.com/p-tt-by-john-pettitt">Medium</a>
+            <span>Email j@ this domain</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  const slots = document.querySelectorAll<HTMLElement>('[data-localtime]');
+
+  function tick() {
+    const now = new Date();
+    slots.forEach((el) => {
+      const time = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: el.dataset.tz,
+      })
+        .format(now)
+        .toLowerCase();
+      el.textContent = `, where it's ${time}`;
+      el.hidden = false;
+    });
+    // Re-arm on the next minute boundary so the readout changes with the clock.
+    setTimeout(tick, 60_000 - (now.getSeconds() * 1000 + now.getMilliseconds()) + 50);
+  }
+
+  if (slots.length) tick();
+</script>
+
+<style>
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 36px;
+  }
+
+  .top h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  .top nav {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+  }
+
+  .top nav a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .top nav a:hover {
+    color: var(--ink);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: var(--gutter) minmax(0, 1fr);
+    gap: 0 24px;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row.now {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .key {
+    font-size: 13px;
+    color: var(--ink-2);
+    padding-top: 2px;
+  }
+
+  .now .key {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .now-body {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .now-text {
+    font-size: 20px;
+    line-height: 1.42;
+    letter-spacing: -0.012em;
+    text-wrap: pretty;
+  }
+
+  [data-localtime] {
+    color: var(--ink-2);
+  }
+
+  .dense {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+
+  .dense {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 18px;
+  }
+
+  /* Repo names break at hyphens by default; keep each name whole and let
+     only the grey provenance text wrap. */
+  .dense a {
+    white-space: nowrap;
+  }
+
+  .prov {
+    margin-left: 5px;
+    color: var(--ink-2);
+  }
+
+  .dense-more {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  .dense-more a {
+    color: var(--ink-2);
+  }
+
+  .dense-more a:hover {
+    color: var(--ink);
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: 550;
+    line-height: 1.4;
+  }
+
+  .body {
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 58ch;
+  }
+
+  .row.entry {
+    padding: 8px 0;
+  }
+
+  .entry .title,
+  .entry .body {
+    display: inline;
+  }
+
+  .entry .title {
+    font-size: 14.5px;
+    margin-right: 8px;
+  }
+
+  .entry .key {
+    padding-top: 1px;
+  }
+
+  .row.landmark {
+    padding: 22px 0 24px;
+  }
+
+  .landmark .key {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+    padding-top: 0;
+  }
+
+  .landmark .title {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  .landmark .body {
+    margin-top: 8px;
+    font-size: 14.5px;
+    max-width: 66ch;
+  }
+
+  .section {
+    margin-top: 88px;
+  }
+
+  .section h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .lead {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-bottom: 16px;
+  }
+
+  .plist,
+  .wlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .plist li {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr) 64px;
+    gap: 4px 20px;
+    align-items: baseline;
+    padding: 13px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+  }
+
+  .pwho {
+    display: grid;
+  }
+
+  .pname {
+    font-weight: 550;
+    justify-self: start;
+  }
+
+  .pprov {
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+
+  .pblurb {
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  .pextra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 14px;
+    margin-top: 3px;
+  }
+
+  .since {
+    font-size: 13px;
+    color: var(--ink-2);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .wlist li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 14.5px;
+  }
+
+  .wmeta {
+    font-size: 13px;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .where {
+    margin-left: 10px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 28px;
+    margin-top: 16px;
+    align-items: start;
+  }
+
+  .about-grid :global(.portrait) {
+    width: 200px;
+    aspect-ratio: 1397 / 1584;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .about-text {
+    display: grid;
+    gap: 14px;
+    font-size: 15px;
+    line-height: 1.62;
+    max-width: 62ch;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 14px;
+  }
+
+  .links span {
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 720px) {
+    .now-body {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .now-text {
+      font-size: 19px;
+    }
+
+    .landmark .key,
+    .landmark .title {
+      font-size: 22px;
+    }
+
+    .plist li {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .pwhat {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .top {
+      padding-top: 32px;
+    }
+
+    .row,
+    .row.landmark {
+      gap: 0 14px;
+    }
+
+    .landmark .key {
+      font-size: 17px;
+      padding-top: 4px;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-grid :global(.portrait) {
+      width: 160px;
+    }
+
+    .wlist li {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* Inline titles break mid-name at this width; give each its own line. */
+    .entry .title,
+    .entry .body {
+      display: block;
+    }
+  }
+</style>

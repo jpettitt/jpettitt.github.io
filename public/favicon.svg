@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .ink { fill: #141414; }
+    .ring { fill: none; stroke: #141414; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #ececec; }
+      .ring { stroke: #ececec; }
+    }
+  </style>
+  <circle class="ring" cx="16" cy="16" r="13" stroke-width="2.5"/>
+  <path class="ink" d="M16 3a13 13 0 0 1 0 26c-4.2-3.4-6.2-7.7-6.2-13S11.8 6.4 16 3z"/>
+</svg>

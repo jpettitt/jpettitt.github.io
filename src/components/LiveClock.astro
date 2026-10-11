@@ -1,0 +1,154 @@
+---
+import { home } from '../data/site';
+
+// Versioned path so a new card release can never be served from a stale
+// cache entry under the old URL.
+const base = '/geoclock/v0.2.11/';
+---
+
+<figure class="live">
+  <div
+    class="frame"
+    aria-hidden="true"
+    data-geoclock
+    data-base={base}
+    data-lat={home.latitude}
+    data-lon={home.longitude}
+    data-tz={home.timeZone}
+  >
+    <img class="still" src={`${base}black-marble-2048.jpg`} alt="" width="1024" height="512" decoding="async" />
+  </div>
+  <figcaption>
+    <a href="https://github.com/jpettitt/geo-clock-card">geo-clock-card</a>, live. The dot is Nevada City.
+  </figcaption>
+</figure>
+
+<script>
+  const frame = document.querySelector<HTMLElement>('[data-geoclock]');
+
+  // Resolves when every image the card drew has loaded, so the live layer
+  // never fades in over a half-painted map. Capped: a slow image must not
+  // leave the still showing forever.
+  function imagesSettled(root: ShadowRoot | null): Promise<void> {
+    const imgs = root ? Array.from(root.querySelectorAll('image, img')) : [];
+    const each = imgs.map(
+      (el) =>
+        new Promise<void>((done) => {
+          if (el instanceof HTMLImageElement && el.complete) return done();
+          el.addEventListener('load', () => done(), { once: true });
+          el.addEventListener('error', () => done(), { once: true });
+        }),
+    );
+    const cap = new Promise<void>((done) => setTimeout(done, 3000));
+    return Promise.race([Promise.all(each).then(() => undefined), cap]);
+  }
+
+  async function mount(el: HTMLElement) {
+    const { base = '', lat, lon, tz } = el.dataset;
+    await import(/* @vite-ignore */ `${base}geo-clock-card.js`);
+    await customElements.whenDefined('geo-clock-card');
+
+    const card = document.createElement('geo-clock-card') as HTMLElement & {
+      setConfig(config: object): void;
+      hass: object;
+      updateComplete?: Promise<unknown>;
+    };
+    // hass goes in before setConfig: setConfig decides whether to fetch the
+    // 980 KB IANA zone table, and it only skips that when it can already see
+    // hass.config.time_zone. The card reads nothing else from hass here.
+    card.hass = {
+      config: { latitude: Number(lat), longitude: Number(lon), time_zone: tz, location_name: 'Nevada City' },
+      states: {},
+    };
+    card.setConfig({
+      type: 'custom:geo-clock-card',
+      center: 'home',
+      showHomeMarker: true,
+      showHomeMarkerLabel: false,
+      showClock: false,
+      showUTC: false,
+      showTimezoneBand: false,
+      showTimezoneRegions: false,
+      showTimezoneBoundaries: false,
+      showTimezonePopup: false,
+      imageryBase: base,
+    });
+    card.className = 'card';
+    el.append(card);
+    await card.updateComplete;
+    await imagesSettled(card.shadowRoot);
+    requestAnimationFrame(() => el.classList.add('is-live'));
+  }
+
+  if (frame) mount(frame).catch(() => {
+    // The still image stays; nothing else on the page depends on the card.
+  });
+</script>
+
+<style>
+  .live {
+    margin: 0;
+  }
+
+  /* 7:3 crops the card's 2:1 map: a sliver of Arctic and most of the
+     Antarctic ice, whose white otherwise dissolves into the light page. */
+  .frame {
+    position: relative;
+    aspect-ratio: 7 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--still);
+    --ha-card-border-radius: 0;
+    --ha-card-background: var(--still);
+  }
+
+  .still,
+  .frame :global(.card) {
+    position: absolute;
+    left: 0;
+    top: -1.67%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+  }
+
+  .still {
+    opacity: 0.85;
+  }
+
+  .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--frame-edge);
+    pointer-events: none;
+  }
+
+  .frame :global(.card) {
+    display: block;
+    opacity: 0;
+    filter: blur(8px);
+    transition:
+      opacity 900ms var(--ease-out),
+      filter 900ms var(--ease-out);
+  }
+
+  .frame:global(.is-live) :global(.card) {
+    opacity: 1;
+    filter: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .frame :global(.card) {
+      transition: none;
+    }
+  }
+
+  figcaption {
+    margin-top: 8px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+</style>

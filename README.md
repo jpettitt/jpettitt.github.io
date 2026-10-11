@@ -1,37 +1,30 @@
-## Welcome to GitHub Pages
+# p.tt
 
-You can use the [editor on GitHub](https://github.com/jpettitt/jpettitt.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+John Pettitt's personal site: what I'm building now, the timeline behind it, and the writing. Built with [Astro](https://astro.build) as a static site and served by GitHub Pages at [p.tt](https://p.tt).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Develop
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```sh
+npm ci
+npm run dev       # http://localhost:4321
+npm run build     # static output in dist/
+npm run preview   # serve dist/
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Content
 
-### Jekyll Themes
+Everything factual lives in [src/data/site.ts](src/data/site.ts): projects, timeline milestones, patents and writing. Patent numbers and grant dates come from Google Patents (LinkedIn's list has errors). Project dates are repo creation months, except weather-radar-card, which is dated from my first commit after taking it over.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jpettitt/jpettitt.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Install links point to each project's GitHub repository, whose README has the install instructions.
 
-### Support or Contact
+## No third-party requests
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+The site sets no cookies and loads nothing from anyone else's servers. Keep it that way:
+
+- Fonts are self-hosted: Mona Sans (SIL OFL) in [public/fonts/](public/fonts/).
+- The live clock is my [geo-clock-card](https://github.com/jpettitt/geo-clock-card) release, self-hosted under a versioned path, [public/geoclock/v0.2.11/](public/geoclock/v0.2.11/), with NASA imagery downscaled to 1024 px. A new card release goes in a new versioned directory, never over the old one.
+- Any change that adds an external request also updates [the privacy page](src/pages/privacy.astro) and its "Last updated" date in the same commit.
+
+## Deploy
+
+[.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds and deploys on every push to `master`. Under the repo's Settings → Pages, the source must be **GitHub Actions**: the old branch-based Jekyll build can't build this site.
